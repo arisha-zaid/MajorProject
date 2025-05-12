@@ -90,6 +90,16 @@ app.use(flash());
 // Initializing local strategy with user model
 app.use(passport.initialize());
 app.use(passport.session());
+
+// Setting up local strategy for passport,cuz getting erro in deploying 
+app.use((req, res, next) => {
+  res.locals.success = req.flash("success");
+  res.locals.error = req.flash("error");
+  res.locals.currUser = req.user;
+  next();
+});
+
+
 passport.use(new LocalStrategy(User.authenticate()));
 // serializing and deserializing users
 passport.serializeUser(User.serializeUser());
